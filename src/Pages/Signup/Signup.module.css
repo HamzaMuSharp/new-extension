@@ -41,3 +41,10 @@ button[type='submit'] {
 button[type='submit']:hover {
   background-color: #0056b3;
 }
+
+p {
+  font-size: 15px;
+  margin: 5px;
+  color: red;
+  font-weight: 500;
+}

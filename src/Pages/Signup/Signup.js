@@ -7,15 +7,14 @@ function Signup(props) {
     const { generateKey } = props
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
-
+    const [error, setError] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
-            alert("Passwords donot match")
+            setError(true)
             return
         }
-        generateKey(e, password)
+        generateKey(e)
 
     }
 
@@ -30,6 +29,7 @@ function Signup(props) {
                 <label for='confirmPassword' >Confirm Password</label>
                 <input id='confirmPassword' type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 <br />
+                {error && <p>Passwords donot match</p>}
                 <button type="submit">Initialize Extension</button>
             </form>
         </div>

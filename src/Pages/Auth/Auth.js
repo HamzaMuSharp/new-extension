@@ -1,51 +1,60 @@
-import React, { useState } from 'react'
-import Secret from '../Secret/Secret'
-import Signin from '../Signin/Signin'
-import Signup from '../Signup/Signup'
-import { useEffect } from 'react'
-import CryptoJS from 'crypto-js'
-import { generateSecret } from '../../utils/generateSecret'
+import React, { useState, useEffect, useCallback } from 'react';
+import SecretManager from '../Secret Manager/SecretManager';
+import Signin from '../Signin/Signin';
+import Signup from '../Signup/Signup';
+import CryptoJS from 'crypto-js';
+import { generateSecret } from '../../utils/generateSecret';
+import { staticKey } from '../../utils/constants';
+import { getChromeState, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
+    const [decryptkey, setdecryptkey] = useState(false);
+    const [isInitialised, setisInitialised] = useState(false);
 
-    const [decrypkey, setdecryptkey] = useState(false)
-    const [isEncrypted, setIsEncrypted] = useState(false)
-    const [password, setPassword] = useState("")
-
-
-    const generateKey = (e, pass) => {
+    const generateKey = (e) => {
         if (e) {
-            e.preventDefault()
+            e.preventDefault();
         }
-        const secretkey = generateSecret()
-        const encryptedText = CryptoJS.AES.encrypt(secretkey, pass).toString()
-        const decryptedText = CryptoJS.AES.decrypt(encryptedText, pass).toString(CryptoJS.enc.Utf8);
-        setdecryptkey(decryptedText)
-        window.chrome.storage.sync.set({ "mySecretKey": encryptedText })
-        setPassword(pass)
-    }
+        const secretkey = generateSecret();
+        const encryptedText = CryptoJS.AES.encrypt(secretkey, staticKey).toString();
+        const decryptedText = CryptoJS.AES.decrypt(
+            encryptedText,
+            staticKey
+        ).toString(CryptoJS.enc.Utf8);
+        setdecryptkey(decryptedText);
+        setChromeState(encryptedText);
+    };
 
+    const resetSecretKey = useCallback(() => setdecryptkey(''), [setdecryptkey]);
 
     useEffect(() => {
-
-        window.chrome.storage.sync.get("mySecretKey", (res) => {
+        getChromeState((res) => {
             if (res.mySecretKey) {
-                setIsEncrypted(true)
+                setisInitialised(true);
+            } else {
+                setisInitialised(false);
             }
-            else {
-                setIsEncrypted(false)
-            }
-        })
-    }, [decrypkey])
-
+        });
+    }, [decryptkey]);
 
     return (
         <>
-
-            {decrypkey ? <Secret decryptedkey={decrypkey} newdecryptedkey={setdecryptkey} generateKey={generateKey} password={password} /> :
-                isEncrypted ? <Signin decryptedkey={setdecryptkey} setPassword={setPassword} /> :
-                    <Signup generateKey={generateKey} />}
+            {decryptkey ? (
+                <SecretManager
+                    decryptkey={decryptkey}
+                    resetSecretKey={resetSecretKey}
+                    generateKey={generateKey}
+                />
+            ) : isInitialised ? (
+                <Signin
+                    setisInitialised={setisInitialised}
+                    decryptkey={setdecryptkey}
+                    resetSecretKey={resetSecretKey}
+                />
+            ) : (
+                <Signup generateKey={generateKey} />
+            )}
         </>
-    )
-}
-export default Auth
+    );
+};
+export default Auth;

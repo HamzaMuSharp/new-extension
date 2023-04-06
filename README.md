@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# React Chrome Extension for Secret Key Generation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React-based Chrome browser extension that generates and stores a user's secret key. The extension consists of four files: Auth.js, SecretManager.js, Signup.js, and Signin.js.
 
-## Available Scripts
+# File 1: Auth.js
 
-In the project directory, you can run:
+This file contains the main authentication component Auth which handles the generation, storage, and retrieval of the secret key. It utilizes the generateSecret function from the ../../utils/generateSecret file for generating the secret key, and CryptoJS library for encryption and decryption. The Auth component also renders SecretManager, Signin, and Signup components based on the state of the secret key and whether the extension has been initialized.
 
-### `npm start`
+# File 2: SecretManager.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This file contains the SecretManager component which displays the user's secret key, provides options for regenerating the key and logging out. It receives props such as resetSecretKey, generateKey, and decryptkey from the parent component.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# File 3: Signup.js
 
-### `npm test`
+This file contains the Signup component which renders a form for the user to input a password and confirm password in order to generate the secret key. It also handles form submission and error handling for password mismatch.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# File 4: Signin.js
 
-### `npm run build`
+This file contains the Signin component which displays a form for the user to input their password to decrypt and retrieve the secret key. It handles form submission, decryption of the secret key, and error handling for incorrect password.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To use this Chrome extension, follow these steps:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Load the extension in your Chrome browser by going to chrome://extensions/ and enabling "Developer mode" in the top right corner.
+Click on "Load unpacked" and select the folder containing the four files mentioned above.
+The extension will now be loaded and visible in your browser's toolbar.
+Click on the extension icon to access the authentication functionality and generate, store, and retrieve the secret key.
+Note: The extension utilizes the chrome.storage.sync API for storing and retrieving the encrypted secret key in the Chrome storage.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Please make sure to handle sensitive information, such as secret keys, with caution and follow best practices for securing user data in a production environment.
