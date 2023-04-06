@@ -8,6 +8,8 @@ import { staticKey } from '../../utils/constants';
 import { getChromeStorage, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
+    console.log("rerenderin")
+
     const [decryptkey, setdecryptkey] = useState(false);
     const [isInitialised, setisInitialised] = useState(false);
     const [keyPassword, setKeyPassword] = useState("");
@@ -31,22 +33,16 @@ const Auth = () => {
     const resetSecretKey = useCallback(() => setdecryptkey(''), [setdecryptkey]);
 
     useEffect(() => {
+
         if (!decryptkey) {
             getChromeStorage().then((res) => {
-                if (res) {
+                console.log(Object.keys(res), "Object.keys(res)")
+                if (res && Object.keys(res).length > 0) {
                     setisInitialised(true);
                 } else {
                     setisInitialised(false);
                 }
             })
-            // getChromeState(keyPassword, (res) => {
-            //     if (res[keyPassword]) {
-            //         setisInitialised(true);
-            //     } else {
-            //         setisInitialised(false);
-            //     }
-            // });
-
         }
 
     }, [decryptkey]);
