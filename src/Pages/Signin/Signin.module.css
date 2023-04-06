@@ -23,7 +23,7 @@ input[type='password'] {
   border-radius: 4px;
 }
 
-button[type='submit'] {
+button {
   margin: 3px 0px;
   background-color: #007bff;
   color: #fff;
@@ -33,7 +33,7 @@ button[type='submit'] {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button[type='submit']:hover {
+button:hover {
   background-color: #0056b3;
 }
 p {

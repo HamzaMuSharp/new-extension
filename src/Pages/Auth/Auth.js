@@ -5,13 +5,15 @@ import Signup from '../Signup/Signup';
 import CryptoJS from 'crypto-js';
 import { generateSecret } from '../../utils/generateSecret';
 import { staticKey } from '../../utils/constants';
-import { getChromeState, setChromeState } from '../../utils/storage';
+import { getChromeStorage, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
     const [decryptkey, setdecryptkey] = useState(false);
     const [isInitialised, setisInitialised] = useState(false);
+    const [keyPassword, setKeyPassword] = useState("");
 
-    const generateKey = (e) => {
+
+    const generateKey = (e, password = keyPassword) => {
         if (e) {
             e.preventDefault();
         }
@@ -22,19 +24,31 @@ const Auth = () => {
             staticKey
         ).toString(CryptoJS.enc.Utf8);
         setdecryptkey(decryptedText);
-        setChromeState(encryptedText);
+        setKeyPassword(password)
+        setChromeState(password, encryptedText);
     };
 
     const resetSecretKey = useCallback(() => setdecryptkey(''), [setdecryptkey]);
 
     useEffect(() => {
-        getChromeState((res) => {
-            if (res.mySecretKey) {
-                setisInitialised(true);
-            } else {
-                setisInitialised(false);
-            }
-        });
+        if (!decryptkey) {
+            getChromeStorage().then((res) => {
+                if (res) {
+                    setisInitialised(true);
+                } else {
+                    setisInitialised(false);
+                }
+            })
+            // getChromeState(keyPassword, (res) => {
+            //     if (res[keyPassword]) {
+            //         setisInitialised(true);
+            //     } else {
+            //         setisInitialised(false);
+            //     }
+            // });
+
+        }
+
     }, [decryptkey]);
 
     return (
@@ -47,6 +61,7 @@ const Auth = () => {
                 />
             ) : isInitialised ? (
                 <Signin
+                    setKeyPassword={setKeyPassword}
                     setisInitialised={setisInitialised}
                     decryptkey={setdecryptkey}
                     resetSecretKey={resetSecretKey}

@@ -14,7 +14,7 @@ function Signup(props) {
             setError(true)
             return
         }
-        generateKey(e)
+        generateKey(e, password)
 
     }
 

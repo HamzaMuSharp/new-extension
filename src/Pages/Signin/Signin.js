@@ -7,24 +7,23 @@ import { staticKey } from '../../utils/constants'
 
 const Signin = (props) => {
 
-    const { decryptkey, resetSecretKey, setisInitialised } = props
+    const { decryptkey, resetSecretKey, setisInitialised, setKeyPassword } = props
     const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault()
-        getChromeState((result) => {
-            const encryptedSecretKey = result.mySecretKey;
+        getChromeState(password, (result) => {
+            const encryptedSecretKey = result[password];
+            if (!encryptedSecretKey) {
+                setError(true)
+                return
+            }
             const decryptedSecretKey = CryptoJS.AES.decrypt(encryptedSecretKey, staticKey).toString(CryptoJS.enc.Utf8);
             if (decryptedSecretKey) {
                 decryptkey(decryptedSecretKey)
             }
-            else {
-                setError(true)
-            }
-
         })
-
-
+        setKeyPassword(password)
     }
 
     const resetHandler = () => {
