@@ -8,8 +8,6 @@ import { staticKey } from '../../utils/constants';
 import { getChromeStorage, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
-    console.log("rerenderin")
-
     const [decryptkey, setdecryptkey] = useState(false);
     const [isInitialised, setisInitialised] = useState(false);
     const [keyPassword, setKeyPassword] = useState("");
@@ -36,7 +34,6 @@ const Auth = () => {
 
         if (!decryptkey) {
             getChromeStorage().then((res) => {
-                console.log(Object.keys(res), "Object.keys(res)")
                 if (res && Object.keys(res).length > 0) {
                     setisInitialised(true);
                 } else {
