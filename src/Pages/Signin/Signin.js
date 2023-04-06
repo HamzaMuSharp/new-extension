@@ -32,19 +32,20 @@ const Signin = (props) => {
             resetSecretKey()
             setisInitialised(false)
         })
-        return (
-            <div className={styles.signinFormcontainer}>
-
-                <form onSubmit={handleSubmit}>
-                    <label for='password' >Password</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {error && <p>Incorrect Password</p>}
-                    <br />
-                    <button type="submit">Signin</button>
-                </form>
-                <button onClick={resetHandler}>Reset</button>
-            </div>
-        )
     }
+    return (
+        <div className={styles.signinFormcontainer}>
 
-    export default Signin
+            <form onSubmit={handleSubmit}>
+                <label for='password' >Password</label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                {error && <p>Incorrect Password</p>}
+                <br />
+                <button type="submit">Signin</button>
+            </form>
+            <button onClick={resetHandler}>Reset</button>
+        </div>
+    )
+}
+
+export default Signin
