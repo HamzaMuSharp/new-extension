@@ -39,6 +39,25 @@ const decipher = salt => {
 }
 
 const staticKey = "MySecretKey@1"
+
+chrome.runtime.onInstalled.addListener(function (details) {
+    if (details.reason === 'install') {
+        chrome.windows.getCurrent({ populate: true }, function (currentWindow) {
+            var left = Math.round((currentWindow.width - 300) / 2);
+            var top = Math.round((currentWindow.height - 300) / 2);
+
+            chrome.windows.create({
+                url: chrome.runtime.getURL('index.html'),
+                type: 'popup',
+                width: 300,
+                height: 300,
+                left: left + currentWindow.left,
+                top: top + currentWindow.top
+            })
+        })
+    }
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.action === "generateKey") {
