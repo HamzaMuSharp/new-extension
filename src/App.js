@@ -1,15 +1,19 @@
 
 import './App.css';
 import Auth from './Pages/Auth/Auth';
-import CryptoJS from "crypto-js"
+import { Provider } from 'react-redux';
+import store from "./store"
+
 
 function App() {
-  window.CryptoJS = CryptoJS
-  console.log(window.CryptoJS, "window.CryptoJS")
+
   return (
-    <div className="App_container">
-      <Auth></Auth>
-    </div>
+    <Provider store={store}>
+      <div className="App_container">
+        <Auth></Auth>
+      </div>
+    </Provider>
+
   );
 }
 

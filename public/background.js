@@ -1,18 +1,6 @@
 /* global chrome*/
-// import CryptoJS from "./crypto-js"
 
-
-// chrome.browserAction.onClicked.addListener(function (tab) {
-//     // Perform an action when the button is clicked, e.g., send a message to the content script
-//     chrome.tabs.sendMessage(tab.id, { message: "Hello from the extension!" });
-// });
-
-// navigator.serviceWorker.register('background.js').then((registration) => {
-//     console.log('Service Worker registered with scope:', registration.scope);
-// }).catch((error) => {
-//     console.error('Service Worker registration failed:', error);
-// });
-
+const staticKey = "MySecretKey@1"
 const generateSecret = () => {
     return Math.random().toString(36).substring(2, 15)
 }
@@ -38,7 +26,6 @@ const decipher = salt => {
         .join('');
 }
 
-const staticKey = "MySecretKey@1"
 
 chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason === 'install') {
@@ -50,7 +37,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
                 url: chrome.runtime.getURL('index.html'),
                 type: 'popup',
                 width: 300,
-                height: 300,
+                height: 340,
                 left: left + currentWindow.left,
                 top: top + currentWindow.top
             })
@@ -61,13 +48,12 @@ chrome.runtime.onInstalled.addListener(function (details) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.action === "generateKey") {
-        // Use the CryptoJS object here
         const secretkey = generateSecret()
         const encryptedText = cipher(staticKey)(secretkey)
         console.log(encryptedText, "encryptedText")
         chrome.storage.sync.set({ [message.password]: encryptedText })
         const decryptedText = decipher(staticKey)(encryptedText)
-        sendResponse(decryptedText);
+        sendResponse({ encryptedText: encryptedText, decryptedText: decryptedText });
         return true
     }
     else if (message.action === "reset") {
@@ -81,7 +67,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse(res);
         });
 
-        return true; // Return true to indicate that sendResponse will be called asynchronously
+        return true;
     }
     else if (message.action === "decrypt") {
         const decryptedText = decipher(staticKey)(message.key)
@@ -89,14 +75,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true;
     }
 });
-
-// self.oninstall = () => {
-//     // The imported script shouldn't do anything, but only declare a global function
-//     // (someComplexScriptAsyncHandler) or use an analog of require() to register a module
-//     tryImport('/js/some-complex-script.js');
-//   };
-
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     console.log(message, "message")
-//     sendResponse("message")
-// });
