@@ -17,7 +17,6 @@ function Signup(props) {
         generateKey(e, password)
 
     }
-
     return (
         <div className={styles.signupFormcontainer}>
             <h3>Please input the password fields to generate secret key</h3>

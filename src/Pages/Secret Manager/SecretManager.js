@@ -4,9 +4,9 @@ import styles from './SecretManager.module.css'
 
 const SecretManager = (props) => {
 
-    const { resetSecretKey, generateKey, decryptkey } = props
+    const { resetDecryptKey, generateKey, decryptkey } = props
     const handleLogout = () => {
-        resetSecretKey()
+        resetDecryptKey()
     }
 
     const regenerateKeyHandler = (e) => {

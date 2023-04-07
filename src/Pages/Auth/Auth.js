@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import SecretManager from '../Secret Manager/SecretManager';
 import Signin from '../Signin/Signin';
 import Signup from '../Signup/Signup';
-import CryptoJS from 'crypto-js';
-import { generateSecret } from '../../utils/generateSecret';
-import { staticKey } from '../../utils/constants';
-import { getChromeState, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
     const [decryptkey, setdecryptkey] = useState(false);
@@ -13,33 +9,27 @@ const Auth = () => {
     const [keyPassword, setKeyPassword] = useState("");
 
 
-    const generateKey = (e, password = keyPassword) => {                                                 // 1
+    const generateKey = (e, password = keyPassword) => {
         e.preventDefault();
-        const secretkey = generateSecret();
-        const encryptedText = CryptoJS.AES.encrypt(secretkey, staticKey).toString();
-        const decryptedText = CryptoJS.AES.decrypt(
-            encryptedText,
-            staticKey
-        ).toString(CryptoJS.enc.Utf8);
-        setdecryptkey(decryptedText);
+        window.chrome.runtime.sendMessage({ action: 'generateKey', password: password }, (decryptedText) => {
+            setdecryptkey(decryptedText);
+        });
         setKeyPassword(password)
-        setChromeState(password, encryptedText);
     };
 
-    const resetSecretKey = useCallback(() => setdecryptkey(''), [setdecryptkey]);
+    //    const resetDecryptKey = useCallback(() => setdecryptkey(''), [setdecryptkey]);
+    const resetDecryptKey = () => setdecryptkey('');
 
     useEffect(() => {
-
         if (!decryptkey) {
-            getChromeState().then((res) => {
+            window.chrome.runtime.sendMessage({ action: 'getState' }, (res => {
                 if (res && Object.keys(res).length > 0) {
                     setisInitialised(true);
                 } else {
                     setisInitialised(false);
                 }
-            })
+            }))
         }
-
     }, [decryptkey]);
 
     return (
@@ -47,7 +37,7 @@ const Auth = () => {
             {decryptkey ? (
                 <SecretManager
                     decryptkey={decryptkey}
-                    resetSecretKey={resetSecretKey}
+                    resetDecryptKey={resetDecryptKey}
                     generateKey={generateKey}
                 />
             ) : isInitialised ? (
@@ -55,7 +45,7 @@ const Auth = () => {
                     setKeyPassword={setKeyPassword}
                     setisInitialised={setisInitialised}
                     decryptkey={setdecryptkey}
-                    resetSecretKey={resetSecretKey}
+                    resetDecryptKey={resetDecryptKey}
                 />
             ) : (
                 <Signup generateKey={generateKey} />
@@ -69,5 +59,7 @@ export default Auth;
 
 
 
+
+
 /////////////////////////////Notes///////////////////////////////////
-//It means that if we donot give 2nd argument whereever we call
+//It means that if we donot give 2nd argument whereever we call generateKey(), set its 2nd argument to keyPassword.

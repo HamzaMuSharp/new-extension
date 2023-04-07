@@ -8,7 +8,7 @@ This file contains the main authentication component Auth which handles the gene
 
 # File 2: SecretManager.js
 
-This file contains the SecretManager component which displays the user's secret key, provides options for regenerating the key and logging out. It receives props such as resetSecretKey, generateKey, and decryptkey from the parent component.
+This file contains the SecretManager component which displays the user's secret key, provides options for regenerating the key and logging out. It receives props such as resetDecryptKey, generateKey, and decryptkey from the parent component.
 
 # File 3: Signup.js
 

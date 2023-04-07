@@ -3,8 +3,10 @@
   "name": "Secret Manager",
   "version": "1.0",
   "description": "A Chrome extension to generate and store user secrets securely.",
-
-  "permissions": ["tabs", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "storage", "scripting", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "icons": {
     "16": "secretkey.png",

@@ -1,35 +1,35 @@
 import React from 'react'
 import { useState } from 'react'
-import CryptoJS from 'crypto-js'
 import styles from './Signin.module.css'
-import { getChromeState, removeChromeState } from '../../utils/storage'
-import { staticKey } from '../../utils/constants'
 
 const Signin = (props) => {
 
-    const { decryptkey, resetSecretKey, setisInitialised, setKeyPassword } = props
+    const { decryptkey, resetDecryptKey, setisInitialised, setKeyPassword } = props
     const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault()
-        getChromeState().then((result) => {
-            const encryptedSecretKey = result[password];
+
+        window.chrome.runtime.sendMessage({ action: 'getState' }, (res) => {
+            const encryptedSecretKey = res[password];
             if (!encryptedSecretKey) {
                 setError(true)
                 return
             }
-            const decryptedSecretKey = CryptoJS.AES.decrypt(encryptedSecretKey, staticKey).toString(CryptoJS.enc.Utf8);
-            decryptkey(decryptedSecretKey)
-        })
+            window.chrome.runtime.sendMessage({ action: 'decrypt', key: encryptedSecretKey }, (decKey) => {
+                decryptkey(decKey)
+            })
+        });
         setKeyPassword(password)
     }
 
     const resetHandler = () => {
-        removeChromeState((items) => {
-            resetSecretKey()
+        window.chrome.runtime.sendMessage({ action: 'reset' }, (resp) => {
+            resetDecryptKey()
             setisInitialised(false)
-        })
+        });
     }
+
     return (
         <div className={styles.signinFormcontainer}>
 
