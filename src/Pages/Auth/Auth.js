@@ -5,7 +5,7 @@ import Signup from '../Signup/Signup';
 import CryptoJS from 'crypto-js';
 import { generateSecret } from '../../utils/generateSecret';
 import { staticKey } from '../../utils/constants';
-import { getChromeStorage, setChromeState } from '../../utils/storage';
+import { getChromeState, setChromeState } from '../../utils/storage';
 
 const Auth = () => {
     const [decryptkey, setdecryptkey] = useState(false);
@@ -13,10 +13,8 @@ const Auth = () => {
     const [keyPassword, setKeyPassword] = useState("");
 
 
-    const generateKey = (e, password = keyPassword) => {
-        if (e) {
-            e.preventDefault();
-        }
+    const generateKey = (e, password = keyPassword) => {                                                 // 1
+        e.preventDefault();
         const secretkey = generateSecret();
         const encryptedText = CryptoJS.AES.encrypt(secretkey, staticKey).toString();
         const decryptedText = CryptoJS.AES.decrypt(
@@ -33,7 +31,7 @@ const Auth = () => {
     useEffect(() => {
 
         if (!decryptkey) {
-            getChromeStorage().then((res) => {
+            getChromeState().then((res) => {
                 if (res && Object.keys(res).length > 0) {
                     setisInitialised(true);
                 } else {
@@ -66,3 +64,10 @@ const Auth = () => {
     );
 };
 export default Auth;
+
+
+
+
+
+/////////////////////////////Notes///////////////////////////////////
+//It means that if we donot give 2nd argument whereever we call

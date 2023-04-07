@@ -12,16 +12,14 @@ const Signin = (props) => {
     const [error, setError] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault()
-        getChromeState(password, (result) => {
+        getChromeState().then((result) => {
             const encryptedSecretKey = result[password];
             if (!encryptedSecretKey) {
                 setError(true)
                 return
             }
             const decryptedSecretKey = CryptoJS.AES.decrypt(encryptedSecretKey, staticKey).toString(CryptoJS.enc.Utf8);
-            if (decryptedSecretKey) {
-                decryptkey(decryptedSecretKey)
-            }
+            decryptkey(decryptedSecretKey)
         })
         setKeyPassword(password)
     }

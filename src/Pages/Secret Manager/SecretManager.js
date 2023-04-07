@@ -9,8 +9,8 @@ const SecretManager = (props) => {
         resetSecretKey()
     }
 
-    const regenerateKeyHandler = () => {
-        generateKey()
+    const regenerateKeyHandler = (e) => {
+        generateKey(e)
     }
 
     return (
