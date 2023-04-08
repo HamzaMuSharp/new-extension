@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "A Chrome extension to generate and store user secrets securely.",
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "serviceworker.js"
   },
   "permissions": [
     "tabs",
