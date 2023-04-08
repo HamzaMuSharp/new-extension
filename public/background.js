@@ -38,6 +38,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
                 type: 'popup',
                 width: 300,
                 height: 340,
+
                 left: left + currentWindow.left,
                 top: top + currentWindow.top
             })

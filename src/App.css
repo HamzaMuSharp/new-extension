@@ -7,3 +7,6 @@
   padding: 20px;
   min-width: 200px;
 }
+button {
+  padding: 12px !important;
+}

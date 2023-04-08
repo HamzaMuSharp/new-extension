@@ -39,7 +39,7 @@ const Signin = (props) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                {error && <p>Incorrect Password</p>}
+                {error && <p className={styles.error}>Incorrect Password</p>}
                 <br />
                 <button type="submit">Signin</button>
             </form>

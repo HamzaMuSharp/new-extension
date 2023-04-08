@@ -16,7 +16,7 @@ const SecretManager = (props) => {
     return (
         <div className={styles.key_container}>
             <h5>Your Secret Key:</h5>
-            <p>{decryptkey}</p>
+            <p className={styles.secKey}>{decryptkey}</p>
             <button onClick={handleLogout}>Logout</button>
             <button onClick={regenerateKeyHandler}>Regenerate key</button>
         </div>

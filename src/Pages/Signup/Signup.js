@@ -28,7 +28,7 @@ function Signup(props) {
                 <label for='confirmPassword' >Confirm Password</label>
                 <input id='confirmPassword' type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 <br />
-                {error && <p>Passwords donot match</p>}
+                {error && <p className={styles.error}>Passwords do not match</p>}
                 <button type="submit">Initialize Extension</button>
             </form>
         </div>
